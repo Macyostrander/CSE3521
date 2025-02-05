@@ -83,7 +83,41 @@ def depthFirstSearch(problem):
     """
     YOUR CODE HERE
     """
-
+    
+    #in the form (34,16)
+    startState= problem.getStartState()
+    
+    #check if start state is goal and return empty directions if so
+    if problem.isGoalState(startState):
+      return []
+    
+    #queue (stack) used for DFS and array of visited nodes, initialized to empty
+    q= util.Stack()
+    visited=[]
+    q.push((startState,[]))
+    
+    while not q.isEmpty():
+      #get next node
+      curr, actions= q.pop()
+      
+      #if current node has not been visited yet, "expand" it
+      if curr not in visited:
+        
+        #add curr to visited list
+        visited.append(curr)
+        
+        #if current node is the goal state, return list of actions to get there
+        if problem.isGoalState(curr):
+          return actions
+        
+        #if its not the goal state
+        for next, action, cost in problem.getSuccessors(curr):
+          #add action to get to successor to actions list and push onto queue to explore
+          q.push((next, actions + [action]))
+    
+    return actions
+  
+  
     util.raiseNotDefined()
     
 
@@ -91,12 +125,81 @@ def breadthFirstSearch(problem):
     """
     YOUR CODE HERE
     """
+    
+    #in the form (34,16)
+    startState= problem.getStartState()
+    
+    #check if start state is goal and return empty directions if so
+    if problem.isGoalState(startState):
+      return []
+    
+    #queue used for BFS and array of visited nodes, initialized to empty
+    q= util.Queue()
+    visited=[]
+    q.push((startState,[]))
+    
+    while not q.isEmpty():
+      #get next node
+      curr, actions= q.pop()
+      
+      #if current node has not been visited yet, "expand" it
+      if curr not in visited:
+        
+        #add curr to visited list
+        visited.append(curr)
+        
+        #if current node is the goal state, return list of actions to get there
+        if problem.isGoalState(curr):
+          return actions
+        
+        #if its not the goal state
+        for next, action, cost in problem.getSuccessors(curr):
+          #add action to get to successor to actions list and push onto queue to explore
+          q.push((next, actions + [action]))
+    
+    return actions
+  
     util.raiseNotDefined()
 
 def uniformCostSearch(problem):
     """
     YOUR CODE HERE
     """
+    
+    #in the form (34,16)
+    startState= problem.getStartState()
+    
+    #check if start state is goal and return empty directions if so
+    if problem.isGoalState(startState):
+      return []
+    
+    #queue used for UCS is a priorityQueue and array of visited nodes, initialized to empty
+    q= util.PriorityQueue()
+    visited=[]
+    #((node , actions to current node , total cost to current node),priority)
+    q.push((startState,[],0),0)
+    
+    while not q.isEmpty():
+      #get next node
+      curr, actions, cost= q.pop()
+      
+      #if current node has not been visited yet, "expand" it
+      if curr not in visited:
+        
+        #add curr to visited list
+        visited.append(curr)
+        
+        #if current node is the goal state, return list of actions to get there
+        if problem.isGoalState(curr):
+          return actions
+        
+        #if its not the goal state
+        for next, action, nextCost in problem.getSuccessors(curr):
+          #add action to get to successor to actions list and push onto queue to explore
+          q.push((next, actions + [action], cost+nextCost),cost+nextCost)
+    
+    return actions
+  
     util.raiseNotDefined()
 
 def nullHeuristic(state, problem=None):
@@ -110,6 +213,42 @@ def aStarSearch(problem, heuristic=nullHeuristic):
     """
     YOUR CODE HERE
     """
+    
+    #in the form (34,16)
+    startState= problem.getStartState()
+    
+    #check if start state is goal and return empty directions if so
+    if problem.isGoalState(startState):
+      return []
+    
+    #queue used for aStar is a priorityQueue and array of visited nodes, initialized to empty
+    q= util.PriorityQueue()
+    visited=[]
+    #((node , actions to current node , total cost to current node),priority)
+    q.push((startState,[],0),0)
+    
+    while not q.isEmpty():
+      #get next node
+      curr, actions, cost= q.pop()
+      
+      #if current node has not been visited yet, "expand" it
+      if curr not in visited:
+        
+        #add curr to visited list
+        visited.append(curr)
+        
+        #if current node is the goal state, return list of actions to get there
+        if problem.isGoalState(curr):
+          return actions
+        
+        #if its not the goal state
+        for next, action, nextCost in problem.getSuccessors(curr):
+          #add action to get to successor to actions list and push onto queue to explore
+          heuristicCost= nextCost + heuristic(next,problem)
+          q.push((next, actions + [action], cost+nextCost),heuristicCost)
+    
+    return actions
+  
     util.raiseNotDefined()
 
 
@@ -118,3 +257,6 @@ bfs = breadthFirstSearch
 dfs = depthFirstSearch
 astar = aStarSearch
 ucs = uniformCostSearch
+
+
+    
