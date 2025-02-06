@@ -240,8 +240,8 @@ def aStarSearch(problem, heuristic=nullHeuristic):
         #if its not the goal state
         for next, action, nextCost in problem.getSuccessors(curr):
           #add action to get to successor to actions list and push onto queue to explore
-          heuristicCost= nextCost + heuristic(next,problem)
-          q.push((next, actions + [action], cost+nextCost),heuristicCost)
+          heuristicCost= cost+ nextCost + heuristic(next,problem)
+          q.push((next, actions + [action], cost+nextCost), heuristicCost)
     
     util.raiseNotDefined()
 
