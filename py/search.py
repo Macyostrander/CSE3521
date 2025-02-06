@@ -100,22 +100,21 @@ def depthFirstSearch(problem):
       #get next node
       curr, actions= q.pop()
       
-      #if current node has not been visited yet, "expand" it
-      if curr not in visited:
+      #if current node is the goal state, return list of actions to get there
+      if problem.isGoalState(curr):
+        print(actions)
+        return actions
         
+      if curr not in visited:
+        #if current node has not been visited yet, "expand" it
         #add curr to visited list
         visited.append(curr)
         
-        #if current node is the goal state, return list of actions to get there
-        if problem.isGoalState(curr):
-          return actions
-        
         #if its not the goal state
-        for next, action, cost in problem.getSuccessors(curr):
+        for next, action, cost in problem.getSuccessors(curr): 
           #add action to get to successor to actions list and push onto queue to explore
-          q.push((next, actions + [action]))
-    
-    return actions
+          q.push((next, actions[:] + [action]))
+
   
   
     util.raiseNotDefined()
@@ -142,22 +141,20 @@ def breadthFirstSearch(problem):
       #get next node
       curr, actions= q.pop()
       
-      #if current node has not been visited yet, "expand" it
-      if curr not in visited:
+      #if current node is the goal state, return list of actions to get there
+      if problem.isGoalState(curr):
+        print(actions)
+        return actions
         
+      if curr not in visited:
+        #if current node has not been visited yet, "expand" it
         #add curr to visited list
         visited.append(curr)
         
-        #if current node is the goal state, return list of actions to get there
-        if problem.isGoalState(curr):
-          return actions
-        
         #if its not the goal state
-        for next, action, cost in problem.getSuccessors(curr):
+        for next, action, cost in problem.getSuccessors(curr): 
           #add action to get to successor to actions list and push onto queue to explore
-          q.push((next, actions + [action]))
-    
-    return actions
+          q.push((next, actions[:] + [action]))
   
     util.raiseNotDefined()
 
@@ -198,7 +195,6 @@ def uniformCostSearch(problem):
           #add action to get to successor to actions list and push onto queue to explore
           q.push((next, actions + [action], cost+nextCost),cost+nextCost)
     
-    return actions
   
     util.raiseNotDefined()
 
@@ -247,8 +243,6 @@ def aStarSearch(problem, heuristic=nullHeuristic):
           heuristicCost= nextCost + heuristic(next,problem)
           q.push((next, actions + [action], cost+nextCost),heuristicCost)
     
-    return actions
-  
     util.raiseNotDefined()
 
 
